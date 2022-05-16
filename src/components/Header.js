@@ -23,7 +23,7 @@ class Header extends Component {
 
     render() {
         return (
-            <header className="p-navigation p-navigation--dark" role="banner">
+            <header className="p-navigation is-dark" >
                 <div className="row">
                   <div className="p-navigation__banner">
                     <div className="p-navigation__logo">
@@ -31,7 +31,7 @@ class Header extends Component {
                                 <a className="p-navigation__link" href="/">
                                     <img className="p-navigation__image" src="https://assets.ubuntu.com/v1/eb4e0ae3-iotdevice.svg" alt="IoT Management Service" />
                                     &nbsp;
-                                    <h3>IoT Management</h3>
+                                    <h3 className="centered" >IoT Management</h3>
                                 </a>
                             </div>
 

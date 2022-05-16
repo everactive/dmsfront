@@ -20,8 +20,8 @@ import constants from './constants'
 
 var service = {
 
-    version: (query, cancelCallback) => {
-        return axios.get(constants.baseUrl + 'version');
+    versions: (query, cancelCallback) => {
+        return axios.get(constants.baseUrl + 'versions');
     },
 
     getToken: () => {
@@ -124,8 +124,8 @@ var service = {
         return axios.post(constants.baseUrl + 'snaps/' + account + '/' + device.device.deviceId + '/services/' + snap + "/restart");
     },
 
-    storeSearch: (snapName,cancelCallback) => {
-        return axios.get(constants.baseUrl + 'store/snaps/' + snapName);
+    storeSearch: (snapName, deviceModel,cancelCallback) => {
+        return axios.get(constants.baseUrl + 'store/snaps/' + deviceModel + '/' + snapName);
     },
 
     clientsList: (account, query, cancelCallback) => {

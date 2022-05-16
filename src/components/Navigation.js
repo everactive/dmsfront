@@ -58,14 +58,14 @@ class Navigation extends Component {
         }
 
         return (
-          <ul className="p-navigation__links" role="menu">
+          <ul className="p-navigation__items" >
               {links.map((l) => {
                   var active = '';
                   if ((this.props.section === l) || (this.props.subsection === l)) {
-                      active = ' active'
+                      active = ' is-selected'
                   }
                   return (
-                    <li key={l} className={'p-navigation__link' + active} role="menuitem"><a href={this.link(l)}>{T(l)}</a></li>
+                    <li key={l} className={'p-navigation__item' + active} ><a className="p-navigation__link" href={this.link(l)}>{T(l)}</a></li>
                   )
               })}
           </ul>

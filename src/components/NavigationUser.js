@@ -42,7 +42,7 @@ class NavigationUser extends Component {
         }
 
         return (
-            <li className="p-navigation__link">
+            <li className="p-navigation__item">
                 <form id="account-form">
                     <select value={this.props.selectedAccount.orgid} onChange={this.handleAccountChange}>
                         {this.props.accounts.map(a => {
@@ -59,12 +59,12 @@ class NavigationUser extends Component {
             // The name is undefined if user authentication is off
             if (token.name) {
                 return (
-                    <li className="p-navigation__link"><a href="https://login.ubuntu.com/" className="p-link--external">{token.name}</a></li>
+                    <li className="p-navigation__item"><a href="https://login.ubuntu.com/" className="p-link--external p-navigation__link">{token.name}</a></li>
                 )
             }
         } else {
             return (
-            <li className="p-navigation__link"><a href="/login" className="p-link--external">{T('login')}</a></li>
+            <li className="p-navigation__item"><a href="/login" className="p-link--external p-navigation__link">{T('login')}</a></li>
             )
         }
     }
@@ -72,7 +72,7 @@ class NavigationUser extends Component {
     renderUserLogout(token) {
         if (isLoggedIn(token)) {
             return (
-                <li className="p-navigation__link"><a href="/logout">{T('logout')}</a></li>
+                <li className="p-navigation__item"><a href="/logout" className="p-navigation__link">{T('logout')}</a></li>
             )
         }
     }

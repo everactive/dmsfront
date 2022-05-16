@@ -90,13 +90,23 @@ class App extends Component {
 
   getRegisteredDevices(orgid) {
     api.clientsList(orgid).then(response => {
-        this.setState({reg_devices: response.data.devices})
+        this.setState({reg_devices: response.data.devices.sort((a, b) => {
+                if (a.device.serial > b.device.serial) return 1;
+                else if (a.device.serial < b.device.serial) return -1;
+
+                return 0
+            })})
     })
   }
 
   getDevices(orgid) {
     api.devicesList(orgid).then(response => {
-        this.setState({devices: response.data.devices})
+        this.setState({devices: response.data.devices.sort((a, b) => {
+                if (a.serial > b.serial) return 1;
+                else if (a.serial < b.serial) return -1;
+
+                return 0
+            })})
     })
   }
 
@@ -118,7 +128,15 @@ class App extends Component {
 
   getSnaps(orgid, endpoint) {
     api.snapsList(orgid, endpoint).then(response => {
-        this.setState({snaps: response.data.snaps})
+        this.setState({snaps: response.data.snaps.sort((a, b) => {
+            if (a.name === b.name) {
+                return 0;
+            } else if (a.name < b.name) {
+                return -1;
+            }
+
+            return 1;
+        })})
     })
     .catch(e => {
         this.setState({message: formatError(e.response), snaps: []});
@@ -214,7 +232,9 @@ class App extends Component {
 
   renderRegister(sectionId, subsection) {
     if (!sectionId) {
-        return <Register token={this.props.token} devices={this.state.reg_devices} account={this.state.selectedAccount} />
+        return <Register token={this.props.token}
+                         devices={this.state.reg_devices}
+                         account={this.state.selectedAccount} />
     }
 
     switch(sectionId) {
@@ -256,11 +276,11 @@ class App extends Component {
     var l = sectionNavLinks(currentSection, sectionId);
     if (l) {
       return (
-        <div className="subnav">
-          <nav className="p-navigation__nav p-navigation--light" role="menubar">
-            <Navigation links={l} section={currentSection} sectionId={sectionId} subsection={subsection} token={this.props.token} />
-          </nav>
-        </div>
+        <div className="p-navigation">
+            <nav className="p-navigation__nav p-navigation--light" >
+              <Navigation links={l} section={currentSection} sectionId={sectionId} subsection={subsection} token={this.props.token} />
+            </nav>
+      </div>
       );
     } else {
       return <span />

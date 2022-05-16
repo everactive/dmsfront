@@ -4,13 +4,21 @@
   "private": true,
   "proxy": "http://dm:8010",
   "dependencies": {
-    "axios": "0.19.0",
+    "@canonical/react-components": "^0.24.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.2",
+    "axios": "^0.24.0",
     "history": "^4.7.2",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "^3.4.3"
+    "react-highlight": "^0.14.0",
+    "react-scripts": "^3.4.3",
+    "react-tooltip": "^4.2.21",
+    "vanilla-framework": "^2.37.1"
   },
   "scripts": {
     "build-css": "node-sass src/ -o src/",
@@ -22,8 +30,7 @@
   },
   "devDependencies": {
     "filesize": "5.0.3",
-    "node-sass": "^4.14.1",
-    "vanilla-framework": "2.4.0"
+    "node-sass": "^4.14.1"
   },
   "browserslist": [
     ">0.2%",

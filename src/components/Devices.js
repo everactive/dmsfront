@@ -17,12 +17,13 @@
 
 
 import React, {Component} from 'react';
-import moment from 'moment';
 import AlertBox from './AlertBox';
 import DialogBox from "./DialogBox";
 import api from "../models/api";
 import {T, formatError} from './Utils';
+var moment = require('moment-timezone');
 
+var local_tz = moment.tz.guess();
 
 class Devices extends Component {
 
@@ -50,7 +51,7 @@ class Devices extends Component {
     }
 
     renderTable(items) {
-        if (items.length > 0) {
+        if (items != null && items.length > 0) {
             return (
             <div>
                 <table>
@@ -197,9 +198,9 @@ class Devices extends Component {
                   <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.brand}</a></td>
                   <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.model}</a></td>
                   <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.serial}</a></td>
-                  <td className="overflow">{moment(l.created).format('lll')}</td>
+                  <td className="overflow">{moment(l.created).tz(local_tz).format('lll z')}</td>
                   <td>
-                      {moment(l.lastRefresh).format('lll')}
+                      {moment(l.lastRefresh).tz(local_tz).format('lll z')}
                       &nbsp;
                       {this.getAge(l.lastRefresh)}
                   </td>

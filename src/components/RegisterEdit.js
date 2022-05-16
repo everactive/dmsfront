@@ -15,17 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import api from '../models/api';
 import AlertBox from './AlertBox';
-import {T, isUserAdmin, formatError} from './Utils';
+import { T, isUserAdmin, formatError } from './Utils';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { CodeSnippet, CodeSnippetBlockAppearance } from '@canonical/react-components';
 
 
-const statusOptions = [{id:1, name:'Waiting'}, {id:2, name:'Enrolled'}, {id:3, name:'Disabled'}]
+const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f7f7f7',
+        color: 'rgb(0, 0, 0)',
+        maxWidth: 650,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}));
+
+const statusOptions = [{ id: 1, name: 'Waiting' }, { id: 2, name: 'Enrolled' }, { id: 3, name: 'Disabled' }]
 
 
 class RegisterEdit extends Component {
-    
+
     constructor(props) {
         super(props)
         this.state = {
@@ -36,7 +51,7 @@ class RegisterEdit extends Component {
             status: 0,
             statusTo: 0,
             deviceData: '',
-            device: {orgid: this.props.account.orgid},
+            device: { orgid: this.props.account.orgid },
         };
     }
 
@@ -51,43 +66,45 @@ class RegisterEdit extends Component {
 
     getDevice(id) {
         api.clientsGet(this.props.account.orgid, id).then(response => {
-            this.setState({device: response.data.enrollment.device,
-                status: response.data.enrollment.status, statusTo:response.data.enrollment.status,
+            this.setState({
+                device: response.data.enrollment.device,
+                status: response.data.enrollment.status, statusTo: response.data.enrollment.status,
                 deviceData: response.data.enrollment.deviceData,
-                deviceId: response.data.enrollment.id});
+                deviceId: response.data.enrollment.id
+            });
         })
-        .catch((e) => {
-            this.setState({error: formatError(e.response.data), hideForm: true});
-        })
+            .catch((e) => {
+                this.setState({ error: formatError(e.response.data), hideForm: true });
+            })
     }
 
     setTitle(title) {
-        this.setState({title: T(title)});
+        this.setState({ title: T(title) });
     }
 
     handleChangeBrand = (e) => {
         var device = this.state.device;
         device.brand = e.target.value;
-        this.setState({device: device});
+        this.setState({ device: device });
     }
 
     handleChangeModel = (e) => {
         var device = this.state.device;
         device.model = e.target.value;
-        this.setState({device: device});
+        this.setState({ device: device });
     }
 
     handleChangeSerial = (e) => {
         var device = this.state.device;
         device.serial = e.target.value;
-        this.setState({device: device});
+        this.setState({ device: device });
     }
 
     handleChangeStatus = (e) => {
         let status = parseInt(e.target.value, 10);
-        this.setState({statusTo: status});
+        this.setState({ statusTo: status });
     }
-    
+
     handleSaveClick = (e) => {
         e.preventDefault();
 
@@ -96,9 +113,9 @@ class RegisterEdit extends Component {
             api.clientsUpdate(this.props.account.orgid, this.state.deviceId, this.state.statusTo, this.state.deviceData).then(response => {
                 window.location = '/register';
             })
-            .catch(e => {
-                this.setState({error: formatError(e.response.data), hideForm: false});
-            })
+                .catch(e => {
+                    this.setState({ error: formatError(e.response.data), hideForm: false });
+                })
         } else {
             // Create a new device
             let device = this.state.device
@@ -106,9 +123,9 @@ class RegisterEdit extends Component {
             api.clientsNew(this.props.account.orgid, device).then(response => {
                 window.location = '/register';
             })
-            .catch(e => {
-                this.setState({error: formatError(e.response.data), hideForm: false});
-            })
+                .catch(e => {
+                    this.setState({ error: formatError(e.response.data), hideForm: false });
+                })
         }
     }
 
@@ -125,11 +142,11 @@ class RegisterEdit extends Component {
         reader.readAsDataURL(file);
     }
 
-    render () {
+    render() {
         if (!isUserAdmin(this.props.token)) {
             return (
                 <div className="row">
-                <AlertBox message={T('error-no-permissions')} />
+                    <AlertBox message={T('error-no-permissions')} />
                 </div>
             )
         }
@@ -137,7 +154,7 @@ class RegisterEdit extends Component {
         if (this.state.hideForm) {
             return (
                 <div className="row">
-                <AlertBox message={this.state.error} />
+                    <AlertBox message={this.state.error} />
                 </div>
             )
         }
@@ -151,35 +168,50 @@ class RegisterEdit extends Component {
                     <div>{T('register-desc')}<br /></div>
 
                     <AlertBox message={this.state.error} />
-
                     <form>
                         <fieldset>
                             {
                                 this.props.id ?
                                     <label htmlFor="id">{T('id')}:
                                         <input type="text" id="id"
-                                               value={this.state.deviceId} disabled={true} />
+                                            value={this.state.deviceId} disabled={true} />
                                     </label>
                                     :
                                     ''
                             }
-
                             <label htmlFor="brand">{T('brand')}:
                                 <input type="text" id="brand" placeholder={T('brand-desc')}
                                     value={this.state.device.brand} onChange={this.handleChangeBrand} disabled={disabled} />
                             </label>
                             <label htmlFor="model">{T('model')}:
                                 <input type="text" id="model" placeholder={T('model-desc')}
-                                       value={this.state.device.model} onChange={this.handleChangeModel} disabled={disabled} />
+                                    value={this.state.device.model} onChange={this.handleChangeModel} disabled={disabled} />
                             </label>
                             <label htmlFor="serial">{T('serial')}:
+                                <HtmlTooltip placement="right" title={
+                                    <div>
+                                        {T('register-tt-1')}
+                                        <CodeSnippet blocks={[{
+                                            appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
+                                            code: T('register-tt-cmd')
+                                        }]} />
+                                        {T('register-tt-2')}<strong>{T('register-tt-3')}</strong>{T('register-tt-4')}
+                                        <CodeSnippet blocks={[{
+                                            appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
+                                            code: T('register-tt-code') 
+                                        }]} />
+                                     {T('register-tt-5')}<code>{T('register-tt-serial')}</code>{T('register-tt-6')}
+                                    </div>
+                                }>
+                                    <span data-tip data-for="serial-tooltip" className="info"> &#9432;</span>
+                                </HtmlTooltip>
                                 <input type="text" id="serial" placeholder={T('serial-desc')}
-                                       value={this.state.device.serial} onChange={this.handleChangeSerial} disabled={disabled} />
+                                    value={this.state.device.serial} onChange={this.handleChangeSerial} disabled={disabled} />
                             </label>
 
                             <label htmlFor="key">{T('device-data')}:
-                                {this.state.deviceData ? <a href={api.clientsGetDownloadHREF(this.props.account.orgid,this.state.deviceId)} className="p-button--base" title={T('download-file')}><i className="fa fa-paperclip" /></a> : ''}
-                                <input type="file" onChange={this.handleFileUpload} className="p-button--base"/>
+                                {this.state.deviceData ? <a href={api.clientsGetDownloadHREF(this.props.account.orgid, this.state.deviceId)} className="p-button--base" title={T('download-file')}><i className="fa fa-paperclip" /></a> : ''}
+                                <input type="file" onChange={this.handleFileUpload} className="p-button--base" />
                             </label>
 
                             <label>
@@ -187,7 +219,7 @@ class RegisterEdit extends Component {
                                     <select value={this.state.statusTo} onChange={this.handleChangeStatus}>
                                         {statusOptions.map(a => {
                                             return <option key={a.id} value={a.id}
-                                                           selected={a.id === this.state.statusTo}>{a.name}</option>;
+                                                selected={a.id === this.state.statusTo}>{a.name}</option>;
                                         })}
                                     </select>
                                     :

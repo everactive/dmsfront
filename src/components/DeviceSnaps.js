@@ -82,11 +82,25 @@ class DeviceRow extends Component {
         e.preventDefault();
         var snap = e.target.getAttribute('data-key');
 
-        api.snapsSettingsUpdate(this.props.account.orgid, this.props.device, snap, this.state.settings).then(response => {
-            this.setState({snapSettings: null})
-            this.props.handleMessage({message: 'Sent request to update snap: ' + snap,
-            messageType: 'information'})
-        })
+        var isValidJSON = true; 
+        try { 
+            JSON.parse(this.state.settings)
+        } 
+        catch (err) {
+            isValidJSON = false; 
+        }
+        
+        if (isValidJSON) {
+            api.snapsSettingsUpdate(this.props.account.orgid, this.props.device, snap, this.state.settings).then(response => {
+                this.setState({snapSettings: null})
+                this.props.handleMessage({message: 'Sent request to update snap: ' + snap,
+                messageType: 'information'})
+            })
+            }
+        else {
+            alert("Invalid JSON:\n" + this.state.settings);
+        }
+
     }
 
     handleSnapRestart = (e) => {
@@ -316,12 +330,14 @@ class DeviceSnaps extends Component {
         })
     }    
 
-    renderShowInstall() {
+    renderShowInstall(modelName) {
         if (this.state.showInstall) {
             return (
                 <SnapDialogBox message={T('confirm-snap-install')} 
                     handleTextChange={this.handleSnapOnChange}
-                    handleInstallClick={this.handleSnapInstall} handleCancelClick={this.handleDialogCancel} />
+                    handleInstallClick={this.handleSnapInstall} 
+                    handleCancelClick={this.handleDialogCancel} 
+                    deviceModel={modelName}/>
             );
         }
     }
@@ -393,7 +409,7 @@ class DeviceSnaps extends Component {
                             </table>
  
                         </div>
-                        {this.renderShowInstall()}
+                        {this.renderShowInstall(d.device.model)}
                     </section>
                 </If>
             </div>

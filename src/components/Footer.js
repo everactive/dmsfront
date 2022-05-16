@@ -24,23 +24,27 @@ class Footer extends Component {
 
   constructor(props) {
       super(props)
-      this.state = {version: ''};
 
-      this.getVersion();
+      this.state = {
+          versions: {}
+      };
+
+      this.getVersions();
   }
 
-  getVersion() {
-    api.version().then(response => {
-        this.setState({version: response.data.version})
+  getVersions() {
+    api.versions().then(response => {
+        this.setState({versions: response.data.versions})
     })
   }
 
   render() {
+      const versions = Object.keys(this.state.versions).map(k => {
+          return "[" + k + ": " + this.state.versions[k] + "]"
+      });
     return (
       <footer className="spacer">
-        <div>
-          <p><small>{T('version')}: {this.state.version}</small></p>
-        </div>
+            <xsmall>{T('versions')}: {versions}</xsmall>
       </footer>
     );
   }

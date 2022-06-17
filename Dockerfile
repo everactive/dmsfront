@@ -1,4 +1,5 @@
-FROM dmsfront-builder-dev:latest AS builder
+ARG BUILDER_IMAGE=dmsfront-builder-dev:latest
+FROM $BUILDER_IMAGE AS builder
 COPY . /src
 RUN npm install
 RUN npm run build

@@ -33,7 +33,7 @@ resource kubernetes_deployment "dmsfront" {
           name = "dmsfront"
           image = local.image
           port {
-            container_port = 8011
+            container_port = 80
           }
         }
       }

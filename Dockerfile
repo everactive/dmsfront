@@ -6,7 +6,7 @@ RUN npm run build
 
 FROM nginx
 
-COPY nginx.conf /etc/nginx
+COPY nginx.conf /etc/nginx/conf.d
 COPY static /usr/share/nginx/html/static
 COPY --from=builder /src/build/static/css /usr/share/nginx/html/static/css
 COPY --from=builder /src/build/static/js /usr/share/nginx/html/static/js

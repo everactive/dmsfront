@@ -1,7 +1,7 @@
-variable namespace {
+variable "namespace" {
   type = string
 }
 
-variable image {
+variable "image" {
   type = string
 }

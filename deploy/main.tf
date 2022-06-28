@@ -8,12 +8,12 @@ terraform {
 
 locals {
   namespace = var.namespace
-  image = var.image
+  image     = var.image
 }
 
-resource kubernetes_deployment "dmsfront" {
+resource "kubernetes_deployment" "dmsfront" {
   metadata {
-    name = "dmsfront"
+    name      = "dmsfront"
     namespace = local.namespace
   }
   spec {
@@ -30,7 +30,7 @@ resource kubernetes_deployment "dmsfront" {
       }
       spec {
         container {
-          name = "dmsfront"
+          name  = "dmsfront"
           image = local.image
           port {
             container_port = 80
@@ -48,10 +48,10 @@ resource "kubernetes_service" "dmsfront-internal" {
   }
   spec {
     selector = {
-      app   = "dmsfront"
+      app = "dmsfront"
     }
     port {
-      port        = "80"
+      port     = "80"
       protocol = "TCP"
     }
   }

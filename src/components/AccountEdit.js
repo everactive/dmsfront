@@ -19,7 +19,7 @@
 import React, {Component} from 'react';
 import api from '../models/api';
 import AlertBox from './AlertBox';
-import {T, isUserSuperuser, formatError} from './Utils';
+import {T, isUserSuperuser, formatError, saveAccount} from './Utils';
 
 class AccountEdit extends Component {
     

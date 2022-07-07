@@ -85,7 +85,11 @@ class AccountEdit extends Component {
             })
         } else {
             api.accountsNew(this.state.account).then(response => {
-                window.location = '/accounts';
+                api.accountsList().then(response => {
+                    var selectedAccount = response.data.organizations[response.data.organizations.length-1];
+                    saveAccount(selectedAccount);
+                    window.location = '/accounts';
+                })
             })
             .catch(e => {
                 this.setState({error: formatError(e.response.data), hideForm: false});

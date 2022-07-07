@@ -1,0 +1,15 @@
+version: '3'
+
+vars:
+  COMPONENT: dmsfront
+
+tasks:
+  build-builder-image:
+    cmds:
+      - docker build -t {{.BUILDER_TAG}} -f Dockerfile.builder .
+  build-image:
+    cmds:
+      - docker build -t {{.COMPONENT}}:{{.TAG}} -f Dockerfile .
+  build-with-builder-image:
+    cmds:
+      - docker run -it -v

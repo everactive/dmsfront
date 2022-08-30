@@ -1,15 +1,20 @@
 version: '3'
 
 vars:
-  COMPONENT: dmsfront
+  COMPONENT: '{{ .COMPONENT | default "dmsfront" }}'
+  TAG: '{{.TAG | default "latest" }}'
+  DOCKERFILE: '{{ .DOCKERFILE | default "Dockerfile" }}'
 
 tasks:
   build-builder-image:
+    desc: Build the image to build the application
     cmds:
       - docker build -t {{.BUILDER_TAG}} -f Dockerfile.builder .
   build-image:
+    desc: Build the application container tagged with $TAG
     cmds:
-      - docker build -t {{.COMPONENT}}:{{.TAG}} -f Dockerfile .
+      - export GIT_SUMMARY="$(git describe --tags --dirty --always)"
+      - docker build -t {{.COMPONENT}}:{{.TAG}} --build-arg GIT_SUMMARY=$GIT_SUMMARY -f {{.DOCKERFILE}} .
   build-with-builder-image:
     cmds:
       - docker run -it -v

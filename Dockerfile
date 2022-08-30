@@ -1,6 +1,9 @@
 ARG BUILDER_IMAGE=dmsfront-builder-dev:latest
+ARG GIT_SUMMARY=UNSET
 FROM $BUILDER_IMAGE AS builder
+ARG GIT_SUMMARY
 COPY . /src
+RUN sed -i s/UNSET/$GIT_SUMMARY/g /src/src/version.js
 RUN npm install
 RUN npm run build
 

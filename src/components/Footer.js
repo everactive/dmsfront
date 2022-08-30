@@ -18,7 +18,7 @@
 import React, {Component} from 'react';
 import api from '../models/api';
 import {T} from './Utils';
-
+import {version} from './../version';
 
 class Footer extends Component {
 
@@ -39,9 +39,11 @@ class Footer extends Component {
   }
 
   render() {
-      const versions = Object.keys(this.state.versions).map(k => {
+      let versions = Object.keys(this.state.versions).map(k => {
           return "[" + k + ": " + this.state.versions[k] + "]"
       });
+
+      versions = "[ dmsfront: " + version + "]" + versions
     return (
       <footer className="spacer">
             <xsmall>{T('versions')}: {versions}</xsmall>

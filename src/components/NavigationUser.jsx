@@ -20,39 +20,6 @@ import {T, isLoggedIn} from './Utils'
 
 
 class NavigationUser extends Component {
-    handleAccountChange = (e) => {
-        e.preventDefault()
-
-        // Get the account
-        var accountId = e.target.value;
-        var account = this.props.accounts.filter(a => {
-            return a.orgid === accountId
-        })[0]
-
-        this.props.onAccountChange(account)
-    }
-
-    renderAccounts(token) {
-        if (!isLoggedIn(token)) {
-            return <span />
-        }
-
-        if (this.props.accounts.length === 0) {
-            return <span />
-        }
-
-        return (
-            <li className="p-navigation__item">
-                <form id="account-form">
-                    <select value={this.props.selectedAccount.orgid} onChange={this.handleAccountChange}>
-                        {this.props.accounts.map(a => {
-                            return <option key={a.orgid} value={a.orgid} selected={a.orgid===this.props.selectedAccount.orgid}>{a.name}</option>;
-                        })}
-                    </select>
-                </form>
-            </li>
-        )
-    }
 
     renderUser(token) {
         if (isLoggedIn(token)) {
@@ -82,8 +49,7 @@ class NavigationUser extends Component {
         var token = this.props.token
 
         return (
-          <ul className="p-navigation__links u-float-right">
-              {this.renderAccounts(token)}
+          <ul className="p-navigation__items">
               {this.renderUser(token)}
               {this.renderUserLogout(token)}
           </ul>

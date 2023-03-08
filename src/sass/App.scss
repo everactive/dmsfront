@@ -16,3 +16,17 @@
  */
 
 @import 'node_modules/vanilla-framework/scss/build';
+
+.info {
+    color: $color-accent;
+}
+
+.led-red {
+    color: #F00;
+}
+.led-orange {
+    color: #ff8a22;
+}
+.led-green {
+    color: rgb(48, 94, 3);
+}

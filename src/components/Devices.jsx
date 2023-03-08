@@ -22,6 +22,13 @@ import DialogBox from "./DialogBox";
 import api from "../models/api";
 import {T, formatError} from './Utils';
 import moment from 'moment-timezone';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 var local_tz = moment.tz.guess();
 
@@ -53,18 +60,34 @@ class Devices extends Component {
     renderTable(items) {
         if (items != null && items.length > 0) {
             return (
-            <div>
-                <table>
-                <thead>
-                    <tr>
-                    <th className="small" /><th>{T('brand')}</th><th>{T('model')}</th><th>{T('serial')}</th><th>{T('reg-date')}</th><th>{T('last-update')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderRows(items)}
-                </tbody>
-                </table>
-            </div>
+            // <div>
+            //     <table>
+            //     <thead>
+            //         <tr>
+            //         <th className="small" /><th>{T('brand')}</th><th>{T('model')}</th><th>{T('serial')}</th><th>{T('reg-date')}</th><th>{T('last-update')}</th>
+            //         </tr>
+            //     </thead>
+            //     <tbody>
+            //         {this.renderRows(items)}
+            //     </tbody>
+            //     </table>
+            // </div>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>{T('brand')}</TableCell>
+                                <TableCell align="right">{T('model')}</TableCell>
+                                <TableCell align="right">{T('serial')}</TableCell>
+                                <TableCell align="right">{T('reg-date')}</TableCell>
+                                <TableCell align="right">{T('last-update')}</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.renderRows(items)}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             );
         } else {
             return (
@@ -186,28 +209,25 @@ class Devices extends Component {
 
     renderRows(items) {
         return items.map((l) => {
-          return (
-              <>
-              <tr key={l.registrationId}>
-                  <td>
-                    <button onClick={this.handleDeviceLogsDialog}  className="small u-float" title={T("fetch logs")} data-key={l.deviceId}>
-                        <i className="fa fa-download" aria-hidden="true" data-key={l.deviceId} />
-                    </button>
-                      {this.renderDelete(l)}
-                  </td>
-                  <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.brand}</a></td>
-                  <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.model}</a></td>
-                  <td className="overflow"><a href={'/devices/' + l.deviceId+ '/info'}>{l.serial}</a></td>
-                  <td className="overflow">{moment(l.created).tz(local_tz).format('lll z')}</td>
-                  <td>
-                      {moment(l.lastRefresh).tz(local_tz).format('lll z')}
-                      &nbsp;
-                      {this.getAge(l.lastRefresh)}
-                  </td>
-              </tr>
-              {this.renderDeviceLogtDialog(l)}
-              </>
-          );
+            return (
+                <TableRow key={l.registrationId}>
+                    <TableCell component="th" scope="row">
+                        <button onClick={this.handleDeviceLogsDialog}  className="small u-float" title={T("fetch logs")} data-key={l.deviceId}>
+                            <i className="fa fa-download" aria-hidden="true" data-key={l.deviceId} />
+                        </button>
+                        {this.renderDelete(l)}
+                    </TableCell>
+                    <TableCell ><a href={'/devices/' + l.deviceId+ '/info'}>{l.brand}</a></TableCell>
+                    <TableCell ><a href={'/devices/' + l.deviceId+ '/info'}>{l.model}</a></TableCell>
+                    <TableCell ><a href={'/devices/' + l.deviceId+ '/info'}>{l.serial}</a></TableCell>
+                    <TableCell >{moment(l.created).tz(local_tz).format('lll z')}</TableCell>
+                    <TableCell>
+                        {moment(l.lastRefresh).tz(local_tz).format('lll z')}
+                        &nbsp;
+                        {this.getAge(l.lastRefresh)}
+                    </TableCell>
+                </TableRow>
+            )
         });
     }
 

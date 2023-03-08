@@ -60,18 +60,6 @@ class Devices extends Component {
     renderTable(items) {
         if (items != null && items.length > 0) {
             return (
-            // <div>
-            //     <table>
-            //     <thead>
-            //         <tr>
-            //         <th className="small" /><th>{T('brand')}</th><th>{T('model')}</th><th>{T('serial')}</th><th>{T('reg-date')}</th><th>{T('last-update')}</th>
-            //         </tr>
-            //     </thead>
-            //     <tbody>
-            //         {this.renderRows(items)}
-            //     </tbody>
-            //     </table>
-            // </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

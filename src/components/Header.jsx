@@ -18,35 +18,37 @@
 import React, {Component} from 'react';
 import Navigation from './Navigation';
 import NavigationUser from './NavigationUser';
-
+import NavigationAccounts from './NavigationAccounts';
 class Header extends Component {
 
     render() {
         return (
-            <header className="p-navigation is-dark" >
-                <div className="row">
-                  <div className="p-navigation__banner">
-                    <div className="p-navigation__logo">
-                            <div className="nav_logo">
-                                <a className="p-navigation__link" href="/">
-                                    <img className="p-navigation__image" src="https://assets.ubuntu.com/v1/eb4e0ae3-iotdevice.svg" alt="IoT Management Service" />
-                                    &nbsp;
-                                    <h3 className="centered" >IoT Management</h3>
-                                </a>
-                            </div>
-
+            <header id="navigation" className="p-navigation">
+                <div className="p-navigation__row">
+                    <div className="p-navigation__banner">
+                        <div className="p-navigation__tagged-logo">
+                            <a className="p-navigation__link" href="#">
+                                <div className="p-navigation__logo-tag">
+                                    <img className="p-navigation__logo-icon"
+                                         src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg" alt="" />
+                                </div>
+                                <span className="p-navigation__logo-title">Ubuntu</span>
+                            </a>
+                        </div>
+                        <a href="#navigation" className="p-navigation__toggle--open" title="menu" onClick={this.handleToggleMenu}>Menu</a>
+                        <a href="#navigation-closed" className="p-navigation__toggle--close" title="close menu">Close
+                            menu</a>
                     </div>
-                    <a href="#navigation" className="p-navigation__toggle--open" title="menu" onClick={this.handleToggleMenu}>
-                        <img src="/static/images/navigation-menu-plain.svg" width="30px" alt="menu" />
-                    </a>
-                    <nav className="p-navigation__nav">
+                    <nav className="p-navigation__nav" aria-label="Example sub navigation">
                         <span className="u-off-screen"><a href="#navigation">Jump to site</a></span>
                         <Navigation section={this.props.section} token={this.props.token} />
-                        <NavigationUser token={this.props.token} 
-                            accounts={this.props.accounts} selectedAccount={this.props.selectedAccount}
-                            onAccountChange={this.props.onAccountChange} />
+                        <NavigationAccounts token={this.props.token}
+                                            accounts={this.props.accounts} selectedAccount={this.props.selectedAccount}
+                                            onAccountChange={this.props.onAccountChange} ></NavigationAccounts>
+                        <NavigationUser token={this.props.token}
+                                        accounts={this.props.accounts} selectedAccount={this.props.selectedAccount}
+                                        onAccountChange={this.props.onAccountChange} />
                     </nav>
-                  </div>
                 </div>
             </header>
         )

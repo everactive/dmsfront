@@ -21,7 +21,7 @@ import AlertBox from './AlertBox';
 import DialogBox from "./DialogBox";
 import api from "../models/api";
 import {T, formatError} from './Utils';
-var moment = require('moment-timezone');
+import moment from 'moment-timezone';
 
 var local_tz = moment.tz.guess();
 

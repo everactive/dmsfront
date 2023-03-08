@@ -36,10 +36,12 @@ import If from './components/If';
 import Index from './components/Index';
 import api from './models/api';
 import {T, isLoggedIn, parseRoute, sectionNavLinks, getAccount, saveAccount, formatError} from './components/Utils'
-import './sass/App.css'
 
-import createHistory from 'history/createBrowserHistory'
-const history = createHistory()
+import './sass/App.scss'
+
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory()
 
 class App extends Component {
 

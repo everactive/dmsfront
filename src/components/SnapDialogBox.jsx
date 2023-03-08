@@ -21,7 +21,7 @@ import api from '../models/api';
 import Pagination from './Pagination';
 import {LoadingImage} from './Constants';
 import {T} from './Utils';
-import filesize from 'filesize'
+import { filesize } from 'filesize'
 
 const PAGELENGTH = 5;
 
